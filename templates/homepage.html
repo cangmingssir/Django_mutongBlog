@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+{% load static %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>木桶博客主页</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-theme.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</head>
+<body>
+<div>
+    <nav class="navbar navbar-inverse">
+        <span class="icon-bar"></span>
+        <ul class="nav nav-tabs">
+            <li><a class="navbar-brand">木桶博客</a></li>
+            <li role="presentation" class="active"><a href="/blog/home/">主页</a></li>
+            {% if not data %}
+                <li role="presentation"><a href="/blog/userLogin/">用户登录</a></li>
+            {% endif %}
+
+            <li role="presentation"><a href="/blog/userSign/">用户注册</a></li>
+
+            {% if data %}
+                <li role="presentation"><a href="/blog/wirteBlog/?user_name={{ data.username }}">发布博客</a></li>
+                <li><img style="border: 1px solid gainsboro;border-radius: 50px;width: 30px;height: 30px;
+                            margin-top: 7px;margin-left: 750px;"
+                         src="/static/upload/{{ data.photo }}"></li>
+                <li><a href="#">{{ data.username }}</a></li>
+                <li role="presentation"><a href="/blog/logout/">退出</a></li>
+            {% endif %}
+
+        </ul>
+    </nav>
+</div>
+
+{#博客显示#}
+{% for blog in blogs %}
+
+    <div class="wrapper wrapper-content  animated fadeInRight blog">
+        <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-8">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <a href="/blog/show/{{ blog.id }}" class="btn-link">
+                            <h2>
+                                {{ blog.title }}
+                            </h2>
+                        </a>
+                        <div class="small m-b-xs">
+                            <strong>{{ blog.author.username }}</strong> <span class="text-muted"><i
+                                class="fa fa-clock-o"></i> 3 小时前</span>
+                        </div>
+                        <p>{{ blog.content }}</p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>发布时间：</h5>
+                                <i class="fa fa-eye"> </i> {{ blog.pubTime }}
+                            </div>
+                            <div class="col-md-6">
+                                <div class="small text-right">
+                                    <h5>状态：</h5>
+{#                                    <div><i class="fa fa-comments-o"> </i> 56 评论</div>#}
+                                    <i class="fa fa-eye"> </i> {{ blog.scanCnt }} 浏览
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div>
+    <p>暂无可显示的博客信息</p>
+    </div>
+{% endfor %}
+
+</body>
+</html>

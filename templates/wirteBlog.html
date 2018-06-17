@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>木桶博客发布博客</title>
+    <script src="/static/tiny_mce/tiny_mce.js"></script>
+    <link rel="stylesheet" href="{% static 'css/bootstrap-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</head>
+<body>
+<div style="height: 50px"></div>
+<form method="post" class="form-horizontal" action="/blog/wirteBlog/">
+    {% csrf_token %}
+    <input type="hidden" name="author_id" value="{{ author_id }}">
+    <div class="form-group">
+        <label for="title" class="control-label col-xs-1 ">标题</label>
+        <div class="col-xs-6">
+            <input id="title" name="title" class="form-control" placeholder="请输入标题">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-1" for="content">内容</label>
+        <div class="col-xs-6">
+            <textarea id="content" class="form-control" name="content">{{ blog.content }}</textarea><br/>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-primary col" style="margin-left: 120px;">提交</button>
+        <a href="/blog/home/" style="margin-left: 50px">返回上一页</a>
+    </div>
+
+
+</form>
+
+<script>
+    tinyMCE.init({
+        "theme": "advanced",
+        "mode": "textareas",
+        "width": "400",
+        "height": "200"
+    });
+</script>
+</body>
+</html>

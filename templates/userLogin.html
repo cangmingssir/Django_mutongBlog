@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>木桶博客用户登录</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <script href="{% static 'js/jquery.min.js' %}"></script>
+    <script href="{% static 'js/bootstrap.min.js' %}"></script>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <span class="icon-bar"></span>
+    <ul class="nav nav-tabs">
+        <li><a class="navbar-brand">木桶博客</a></li>
+        <li role="presentation"><a href="/blog/home/">主页</a></li>
+        <li role="presentation" class="active"><a href="/blog/userLogin/">用户登录</a></li>
+        <li role="presentation"><a href="/blog/userSign/">用户注册</a></li>
+    </ul>
+</nav>
+<form method="post" class="form-horizontal" action="/blog/userLogin/">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="username" class="control-label col-xs-1 ">用户名:</label>
+        <div class="col-xs-3">
+            <input id="username" name="username" class="form-control" placeholder="请输入用户名">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="password" class="control-label col-xs-1">密码:</label>
+        <div class="col-xs-3">
+            <input id="password" type="password" name="passwd" placeholder="请输入密码" class="form-control">
+        </div>
+    </div>
+    {#        <div class="form-group">#}
+    {#            <label for="password" class="control-label col-xs-1">日期:</label>#}
+    {#            <div class="col-xs-3">#}
+    {#                <input id="password" type="date" name="username" placeholder="口令" class="form-control">#}
+    {#            </div>#}
+    {#        </div>#}
+    {#        <div class="form-group">#}
+    {#            <label for="cici" class="control-label col-xs-1">余款:</label>#}
+    {#            <div class="input-group col-xs-3" style="padding-left: 15px;padding-right: 15px;">#}
+    {#                <div class="input-group-addon">¥</div>#}
+    {#                <input id="cici" class="form-control">#}
+    {#                <div class="input-group-addon">万元</div>#}
+    {#            </div>#}
+    {#        </div>#}
+    <div class="form-group">
+        <label class="col-xs-1" style="margin-left: 15px"></label>
+        <input name="verifycode" placeholder="验证码">
+                {% if error_msg %}
+                       <span style="color: red">{{ error_msg }}</span>
+                {% endif %}<br/>
+        <img src="/blog/verifycode/" width="120px" height="30px"
+             onclick="flushVerifyCode(this)"
+                style="margin:5px 0 0 140px">
+    </div>
+
+    <div class="checkbox control-label col-xs-1 " style="margin-left: 85px">
+        {#            <div class="col-xs-3">#}
+        <input type="checkbox" name="remember" value="1">记住我
+        {#            </div>#}
+    </div>
+
+    <br/>
+    <div class="">
+        <button type="submit" class="btn btn-primary" style="margin-top: 20px;: ">登录</button>
+        <a href="/blog/home/" style="margin-left: 50px">返回主页</a>
+    </div>
+</form>
+
+<script>
+    function flushVerifyCode(img) {
+        {#alert('jinlaile ')#}
+        img.src = '/blog/verifycode/?num=' + Math.random();
+
+        {# 更新验证码图片 #}
+    }
+    {#验证出错后刷新页面#}
+    {% if usererror %}
+        alert('{{ usererror }}');
+        window.opener.document.location.reload();
+    {% endif %}
+
+</script>
+</body>
+</html>

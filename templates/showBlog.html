@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>文章详情</title>
+    <script src="/static/tiny_mce/tiny_mce.js"></script>
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-theme.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content  animated fadeInRight article">
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+            <div class="ibox">
+                <div class="ibox-content">
+                    {#                    <div class="pull-right">#}
+                    {#                        <button class="btn btn-white btn-xs" type="button">700BIKE</button>#}
+                    {#                        <button class="btn btn-white btn-xs" type="button">BeginOne</button>#}
+                    {#                        <button class="btn btn-white btn-xs" type="button">乐视超级自行车</button>#}
+                    {#                    </div>#}
+                    <div class="text-center article-title">
+                        <h1>
+                            {{ blog.title }}
+                        </h1>
+                    </div>
+                    <p>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>{{ blog.content }}
+                    </p>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-lg-12">
+
+                            <h2>评论：</h2>
+                            {% for revert in blog.revert_set.all %}
+
+                                <div class="social-feed-box">
+                                    <div class="social-avatar">
+                                        <a href="" class="pull-left">
+                                            <img alt="image"
+                                                 style="border: 1px solid gainsboro;border-radius:
+                                                 50px;width: 30px;height: 30px;
+                                                 margin-top: 7px;margin-left: 5px;"
+                                                 src="/static/upload/{{ revert.author.toDict.photo }}">
+                                        </a>
+                                        <div class="media-body">
+                                            <a href="#">
+                                                {{ revert.author.username }}
+                                            </a>
+                                            <small class="text-muted">17 小时前</small>
+                                        </div>
+                                    </div>
+                                    <div class="social-body">
+                                        <p>
+                                            {{ revert.content }}
+                                        </p>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div class="social-feed-box">
+                                    <div class="social-avatar">
+                                        <p>暂无评论</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        <hr/>
+                            <br/>
+                            {#回帖部分#}
+                            <div class="social-feed-box ">
+                                <div class="social-avatar">
+                                    <h4>发表评论:</h4><br/>
+                                    <button class="btn btn-info right" onclick="save()">回复</button>
+                                </div>
+                                <br/>
+                                <div class="social-feed-box" style="width: 800px">
+                                    <form method="post" action="/blog/revert/" >
+                                        {% csrf_token %}
+                                        <input type="hidden" name="blog_id" value="{{ blog.id }}">
+                                        <textarea name="revertCotent"></textarea>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    tinyMCE.init({
+        "theme": "advanced",
+        "mode": "textareas",
+        "width": "400",
+        "height": "200"
+    });
+
+    function save() {
+        document.forms[0].submit()
+    }
+
+</script>
+</body>
+</html>
